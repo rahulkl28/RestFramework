@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['GET'])
 def get_book(request):
@@ -19,7 +19,7 @@ def get_book(request):
 
 
 class RegisterUser(APIView):
-   def post(Self, request):
+   def post(self, request):
       serializer = UserSerializer(data = request.data)
 
       if not serializer.is_valid():
@@ -29,12 +29,13 @@ class RegisterUser(APIView):
       serializer.save()
       
       user = User.objects.get(username = serializer.data['username'])
-      token_obj, create = Token.objects.get_or_create(user = user)
+      refresh = RefreshToken.for_user(user)
 
-      return Response({'status': 200, 'payload': serializer.data, 'token': str(token_obj), 'message': "Your token is generated"})
+
+      return Response({'status': 200, 'payload': serializer.data, 'refresh': str(refresh),'access': str(refresh.access_token), 'message': "Your token is generated"})
 
 class StudentAPI(APIView):
-   authentication_classes = [TokenAuthentication]
+   authentication_classes = [JWTAuthentication]
    permission_classes = [IsAuthenticated]
 
 
