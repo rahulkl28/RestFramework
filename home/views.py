@@ -9,6 +9,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import generics
 
 @api_view(['GET'])
 def get_book(request):
@@ -106,10 +107,17 @@ class StudentAPI(APIView):
          return Response({'status' : 403, 'message' : 'invalid id'})
 
 
+#Generic Views
+
+class StudentGeneric(generics.ListAPIView, generics.CreateAPIView):
+   queryset = Student.objects.all()
+   serializer_class = StudentSerializer
 
 
-
-
+class StudentGeneric1(generics.UpdateAPIView, generics.DestroyAPIView):
+      queryset = Student.objects.all()
+      serializer_class = StudentSerializer
+      lookup_field = "id"
 
 
                    #With The Help of Serialization method only

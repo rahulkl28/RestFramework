@@ -4,6 +4,9 @@ from .views import *
 
 urlpatterns = [
 
+
+    path('generic-student/', StudentGeneric.as_view()), 
+    path('generic-student/<id>/', StudentGeneric1.as_view()), 
     path('student/', StudentAPI.as_view()),
     # path('', home),
     # path('student/', post_student),
