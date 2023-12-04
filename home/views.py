@@ -10,6 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle
 
 @api_view(['GET'])
 def get_book(request):
@@ -38,6 +40,7 @@ class RegisterUser(APIView):
 class StudentAPI(APIView):
    authentication_classes = [JWTAuthentication]
    permission_classes = [IsAuthenticated]
+   throttle_classes = [UserRateThrottle]
 
 
    def get(self, request):
@@ -110,6 +113,7 @@ class StudentAPI(APIView):
 #Generic Views
 
 class StudentGeneric(generics.ListAPIView, generics.CreateAPIView):
+   permission_classes =  [IsAuthenticated]
    queryset = Student.objects.all()
    serializer_class = StudentSerializer
 
@@ -120,7 +124,7 @@ class StudentGeneric1(generics.UpdateAPIView, generics.DestroyAPIView):
       lookup_field = "id"
 
 
-                   #With The Help of Serialization method only
+#With The Help of Serialization method only
 
 # @api_view(['GET'])
 # def home(request):

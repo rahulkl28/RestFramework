@@ -14,5 +14,5 @@ urlpatterns = [
     # path('delete-student/<id>/', delete_student),
     path('register/', RegisterUser.as_view()),
     path('get-book/', get_book),
-    
+             
 ]
